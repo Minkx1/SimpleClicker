@@ -9,9 +9,15 @@ The newest version is 1.0.0
 
 - **Custom CPS**: Set the number of clicks per second.
 - **Mouse Button Selection**: Choose left, right, or middle mouse button.
+<<<<<<< HEAD
 - **Customizable Hotkeys**:
   - **F6** — Start/Stop clicker (by default)
   - **F7** — Exit program (by default)
+=======
+- **Hotkeys**:
+  - **F6** — Start/Stop clicker
+  - **F7** — Exit program
+>>>>>>> 31dbb2d57144ca1fcfd76e942e770964e6a2c549
 - **Settings Persistence**: Configuration is saved in `AppData/Roaming/SimpleClicker/settings.json`.
 - **Custom UI**: Built with [CustomTkinter](https://github.com/TomSchimansky/CustomTkinter) for a modern dark theme interface.
 
