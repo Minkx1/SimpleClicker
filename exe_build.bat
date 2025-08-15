@@ -1,0 +1,1 @@
+pyinstaller --noconsole --onefile --icon=icon.ico --name=SimpleClicker main.py

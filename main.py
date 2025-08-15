@@ -30,13 +30,13 @@ class Clicker():
 
             if pressed_key == start_stop_key:
                 self.pause = not self.pause
-                print("⏸ Paused" if self.pause else "▶ Running")
+                # print("⏸ Paused" if self.pause else "▶ Running")
                 self.hold = False
 
             elif pressed_key == quit_key:
                 self.pause = True
                 stop_event.set()
-                print("❌ Exit")
+                # print("❌ Exit")
                 return False
 
         except Exception as e:
