@@ -1,4 +1,3 @@
-````markdown
 # SimpleClicker
 
 SimpleClicker is a lightweight and customizable auto-clicker for Windows, built with Python. It allows you to automate mouse clicks with configurable clicks per second (CPS), mouse button selection, and hotkeys.
