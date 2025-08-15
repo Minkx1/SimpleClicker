@@ -1,11 +1,15 @@
 """===== settings.py ====="""
 
 import os, json
+from pathlib import Path
 
 version = '1.0.0'  # program version
 
 # Paths for settings folder and file
-SETTINGS_DIR = os.path.join(os.getenv("APPDATA"), "SimpleClicker")
+if os.name == "nt":  # Windows
+    SETTINGS_DIR = os.path.join(os.getenv("APPDATA"), "SimpleClicker")
+else:  # Linux / macOS
+    SETTINGS_DIR = os.path.join(Path.home(), ".simpleclicker")
 SETTINGS_FILE = os.path.join(SETTINGS_DIR, "settings.json")
 
 os.makedirs(SETTINGS_DIR, exist_ok=True)
