@@ -3,7 +3,7 @@
 import os, json
 from pathlib import Path
 
-version = '1.0.0'  # program version
+version = '1.1.0'  # program version
 
 # Paths for settings folder and file
 if os.name == "nt":  # Windows
