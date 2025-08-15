@@ -11,7 +11,7 @@ SimpleClicker is a lightweight and customizable auto-clicker for Windows, built 
 - **Hotkeys**:
   - **F6** — Start/Stop clicker
   - **F7** — Exit program
-- **Settings Persistence**: Configuration is saved in `AppData/SimpleClicker/settings.json`.
+- **Settings Persistence**: Configuration is saved in `AppData/Roaming/SimpleClicker/settings.json`.
 - **Custom UI**: Built with [CustomTkinter](https://github.com/TomSchimansky/CustomTkinter) for a modern dark theme interface.
 
 ---
@@ -21,7 +21,7 @@ SimpleClicker is a lightweight and customizable auto-clicker for Windows, built 
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/yourusername/SimpleClicker.git
+git clone https://github.com/Minkx1/SimpleClicker.git
 cd SimpleClicker
 ````
 
