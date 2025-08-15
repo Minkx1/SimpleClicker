@@ -2,7 +2,7 @@
 
 import os, json
 
-version = '0.2.0'  # program version
+version = '1.0.0'  # program version
 
 # Paths for settings folder and file
 SETTINGS_DIR = os.path.join(os.getenv("APPDATA"), "SimpleClicker")
