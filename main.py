@@ -1,6 +1,6 @@
 """===== main.py ====="""
 
-import time, threading
+import time, threading,random
 from pynput import keyboard
 from pynput.mouse import Controller,Button
 
@@ -27,9 +27,13 @@ class Clicker():
         self.hold = False
         self.released_hold = False
         self.pause = True  # pause state
-        self.mode = get_setting("clicker_mode") # clicker mode
+
+        self.rand_del = get_setting("random_delay")
+        self.randomize = True
+        if self.rand_del == 0: self.randomize = False
+        self.mode = get_setting("clicker_mode")
         self.button = str_to_btn(get_setting("mouse_button"))
-        self.click_cooldown = 1 / int(get_setting('cps')) # time between clicks
+        self.click_cooldown = 1 / int(get_setting('cps')) # time delay between clicks
 
     def on_press(self, key):
         try:
@@ -59,20 +63,23 @@ class Clicker():
     def run(self):
         # Main clicker loop
         while not stop_event.is_set():
-            if not self.pause:  
+            if not self.pause:
+                if self.randomize:
+                        delta = random.randint(-1*self.rand_del, self.rand_del)/1000
+                else: delta = 0
+
                 if self.mode == "single":
-                    
                     mouse.click(self.button)
-                    time.sleep(self.click_cooldown)
+                    time.sleep(self.click_cooldown+delta)
 
                 elif self.mode == "double":
 
                     mouse.click(self.button, 2)
-                    time.sleep(self.click_cooldown)
+                    time.sleep(self.click_cooldown+delta)
 
                 elif self.mode == "hold":
                     if not self.hold:
-                        mouse.press(self.button)
+                        mouse.press(self.button+delta)
                         self.hold = True
             else:
                 time.sleep(1.0)

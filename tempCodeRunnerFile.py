@@ -1,0 +1,2 @@
+UI = ClickerUI()
+UI.run()

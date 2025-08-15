@@ -20,7 +20,8 @@ DEFAULT_SETTINGS = {
     "mouse_button": "left",
     "hotkey_start": "F6",
     "hotkey_quit": "F7",
-    "clicker_mode": "single"
+    "clicker_mode": "single",
+    "random_delay": 0
 }
 
 # Current settings (loaded from file or defaults)

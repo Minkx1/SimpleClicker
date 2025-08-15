@@ -2,6 +2,7 @@
 
 from settings import *
 
+import sys,subprocess
 import customtkinter as ctk
 from tkinter import messagebox
 from pynput import keyboard
@@ -53,10 +54,12 @@ class ClickerUI():
         self.combo_button.pack(fill="x", pady=(0, 10))  
 
         ctk.CTkButton(left_frame, text="Save Changes", command=self.save_settings).pack(pady=10)
+        ctk.CTkButton(left_frame, text="Restart", command=self.restart_program).pack(pady=5)
 
         # HotKeys Buttons and Clicker Mode
         right_frame = ctk.CTkFrame(frame)
         right_frame.pack(side="right", fill="both", expand=False)
+        
 
         self.btn_start_hotkey = ctk.CTkButton(
             right_frame,
@@ -87,6 +90,31 @@ class ClickerUI():
         self.combo_mode.set(get_setting("clicker_mode"))
         self.combo_mode.pack(side="left")
 
+        # Randomized Delay
+        random_frame = ctk.CTkFrame(right_frame)
+        random_frame.pack(anchor="ne", pady=(5, 10), padx=10)
+
+        self.label_random = ctk.CTkLabel(random_frame, text="Random Delay (ms)")
+        self.label_random.pack(side="left", padx=(0,5))
+
+        self.entry_random = ctk.CTkEntry(random_frame, width=50)
+        self.entry_random.insert(0, str(get_setting("random_delay")))
+        self.entry_random.pack(side="left")
+
+    def restart_program(self):
+        """Restart main file"""
+        try:
+            # Отримуємо шлях до поточного інтерпретатора/файлу
+            if getattr(sys, 'frozen', False):  # якщо exe
+                executable = sys.executable
+            else:  # звичайний скрипт
+                executable = sys.executable
+                args = [sys.argv[0]] + sys.argv[1:]
+                subprocess.Popen([executable] + args)
+                os._exit(0)  # завершуємо старий процес
+        except Exception as e:
+            print("Restart failed:", e)
+            
 
     def set_start_hotkey(self):
         self._listen_for_hotkey('hotkey_start')
@@ -144,18 +172,30 @@ class ClickerUI():
             cps = int(self.entry_cps.get())
             if cps <= 0:
                 raise ValueError
+            
             self.base_cps = cps
+            set_setting('cps', cps)
         except ValueError:
             # Show error if input is invalid
             messagebox.showerror("Error", "Please enter a valid positive number for Clicks/sec.")
             self.entry_cps.delete(0, "end")
             self.entry_cps.insert(0, str(self.base_cps))
             return
+        
+        try:
+            random_delay = int(self.entry_random.get())
+            if random_delay < 0:
+                raise ValueError
+            set_setting("random_delay", random_delay)
+        except ValueError:
+            messagebox.showerror("Error", "Random Delay must be 0 or positive integer.")
+            self.entry_random.delete(0, "end")
+            self.entry_random.insert(0, str(get_setting("random_delay")))
+            return
 
         # Save values from fields to settings
         self.base_button = self.combo_button.get()
         set_setting('mouse_button', self.base_button)
-        set_setting('cps', self.base_cps)
 
         # Updating UI
         self.entry_cps.delete(0, "end")
