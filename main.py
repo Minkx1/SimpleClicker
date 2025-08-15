@@ -65,7 +65,7 @@ class Clicker():
         while not stop_event.is_set():
             if not self.pause:
                 if self.randomize:
-                        delta = random.randint(-1*self.rand_del, self.rand_del)/1000
+                        delta = random.randint(0, self.rand_del)/1000
                 else: delta = 0
 
                 if self.mode == "single":
