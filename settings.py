@@ -2,7 +2,7 @@
 
 import os, json
 
-version = '0.1.0'  # program version
+version = '0.2.0'  # program version
 
 # Paths for settings folder and file
 SETTINGS_DIR = os.path.join(os.getenv("APPDATA"), "SimpleClicker")
@@ -15,7 +15,8 @@ DEFAULT_SETTINGS = {
     "cps": 10,
     "mouse_button": "left",
     "hotkey_start": "F6",
-    "hotkey_stop": "F7"
+    "hotkey_quit": "F7",
+    "clicker_mode": "single"
 }
 
 # Current settings (loaded from file or defaults)

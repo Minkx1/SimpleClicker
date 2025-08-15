@@ -10,51 +10,63 @@ stop_event = threading.Event()
 
 class Clicker():
     def __init__(self):
-        self.click_cooldown = 1 / int(get_setting('cps'))  # time between clicks
-        self.button = get_setting('mouse_button')
+        self.hold = False
+        self.released_hold = False
         self.pause = True  # pause state
+        self.mode = get_setting("clicker_mode") # clicker mode
+        self.button = get_setting("mouse_button") 
+        self.click_cooldown = 1 / int(get_setting('cps')) # time between clicks
 
     def on_press(self, key):
         try:
-            if key == keyboard.Key.f6:  # toggle pause/start
+            start_stop_key = get_setting("hotkey_start").lower()
+            quit_key = get_setting("hotkey_quit").lower()
+
+            # Отримуємо назву натиснутої клавіші
+            if hasattr(key, 'char') and key.char:
+                pressed_key = key.char.lower()
+            else:
+                pressed_key = str(key).replace("Key.", "").lower()
+
+            if pressed_key == start_stop_key:
                 self.pause = not self.pause
                 print("⏸ Paused" if self.pause else "▶ Running")
-            elif key == keyboard.Key.f7:  # exit program
+                self.hold = False
+
+            elif pressed_key == quit_key:
                 self.pause = True
-                stop_event.set()  # signal all threads to stop
+                stop_event.set()
                 print("❌ Exit")
                 return False
-        except:
-            pass
+
+        except Exception as e:
+            print(f"Error in on_press: {e}")
 
     def run(self):
         # Main clicker loop
+        
         while not stop_event.is_set():
-            if not self.pause:
-                pyautogui.click(button=self.button)
-                time.sleep(self.click_cooldown)
+            if not self.pause:  
+                if self.mode == "single":
+                    pyautogui.click(button=self.button)
+                    time.sleep(self.click_cooldown)
+                elif self.mode == "double":
+                    pyautogui.click(button=self.button, clicks=2)
+                    time.sleep(self.click_cooldown)
+                elif self.mode == "hold":
+                    if not self.hold:
+                        pyautogui.mouseDown(button=self.button)
+                        self.hold = True
             else:
-                time.sleep(0.1)
+                time.sleep(1.0)
+
+            self.mode = get_setting("clicker_mode") 
+            self.button = get_setting("mouse_button") 
+            self.click_cooldown = 1 / int(get_setting('cps')) 
 
 def start_ui():
     UI = ClickerUI()
-
-    def on_close():
-        stop_event.set()  # stop everything when GUI is closed
-        UI.root.destroy()
-
-    UI._ui_init()
-    UI.root.protocol("WM_DELETE_WINDOW", on_close)
-
-    # Periodically check if stop_event is set
-    def check_stop():
-        if stop_event.is_set():
-            UI.root.destroy()
-        else:
-            UI.root.after(100, check_stop)
-
-    UI.root.after(100, check_stop)
-    UI.root.mainloop()
+    UI.run(stop_event=stop_event)
 
 if __name__ == "__main__":
     # Start clicker
