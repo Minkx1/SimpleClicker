@@ -79,7 +79,7 @@ class Clicker():
 
                 elif self.mode == "hold":
                     if not self.hold:
-                        mouse.press(self.button+delta)
+                        mouse.press(self.button)
                         self.hold = True
             else:
                 time.sleep(1.0)
